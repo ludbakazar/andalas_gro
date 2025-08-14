@@ -21,7 +21,6 @@ export default function Dashboard() {
     <div className="bg-gray-200 min-h-screen p-6 sm:p-10">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Create Transaction Card */}
           <Card
             href="/transactions/create"
             iconBg="bg-indigo-100"
@@ -44,7 +43,6 @@ export default function Dashboard() {
             description="Create new financial transaction records"
           />
 
-          {/* List Transactions Card */}
           <Card
             href="/transactions"
             iconBg="bg-green-100"
@@ -67,7 +65,6 @@ export default function Dashboard() {
             description="View all transaction records"
           />
 
-          {/* Reports Card */}
           <Card
             href="#"
             iconBg="bg-blue-100"
