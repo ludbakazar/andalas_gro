@@ -8,19 +8,25 @@ export async function POST(request) {
   try {
     const { username, password } = await request.json();
     if (!username || !password) {
-      return new Response("Missing username or password", { status: 400 });
+      return Response.json(
+        { message: "Missing username or password" },
+        { status: 400 }
+      );
     }
     const user = await prisma.users.findFirst({
       where: { username },
     });
 
     if (!user) {
-      return new Response("User not found", { status: 404 });
+      return Response.json({ message: "User not found" }, { status: 404 });
     }
 
     const comparePass = await comparePasswords(password, user.password);
     if (!comparePass) {
-      return new Response("Invalid username/password", { status: 401 });
+      return Response.json(
+        { message: "Invalid username/password" },
+        { status: 401 }
+      );
     }
 
     const access_token = createToken({
