@@ -1,3 +1,5 @@
+import { hashPassword } from "@/lib/auth";
+import errorHandler from "@/lib/errorHandler";
 import prisma from "@/lib/prisma";
 
 export async function POST(request) {
@@ -8,7 +10,7 @@ export async function POST(request) {
       data: {
         email,
         username,
-        password,
+        password: await hashPassword(password),
       },
     });
 
@@ -20,9 +22,11 @@ export async function POST(request) {
       },
     });
 
-    return Response.json("ok");
+    return Response.json({
+      message: "User registered successfully",
+      status: 201,
+    });
   } catch (error) {
-    console.log(error);
-    return Response.json("error");
+    return errorHandler(error);
   }
 }
