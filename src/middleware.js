@@ -25,13 +25,14 @@ export async function middleware(request) {
 
     const token = authToken.split(" ")[1];
     const decoded = await verifyTokenJose(token);
+    console.log(decoded);
 
     if (!decoded) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
     const headers = new Headers(request.headers);
-    headers.set("userId", decoded._id);
+    headers.set("userId", decoded.id);
 
     return NextResponse.next({
       request: { headers },
