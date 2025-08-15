@@ -135,6 +135,7 @@ export default function SuppliersPage() {
                           key={index}
                           supplier={item}
                           no={index + 1}
+                          fetchSupplier={fetchSupplier}
                         />
                       ))}
                     </tbody>

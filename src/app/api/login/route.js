@@ -2,7 +2,6 @@ import { comparePasswords, createToken } from "@/lib/auth";
 import errorHandler from "@/lib/errorHandler";
 import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
-import { use } from "react";
 
 export async function POST(request) {
   try {
