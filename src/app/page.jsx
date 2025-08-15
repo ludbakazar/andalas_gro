@@ -18,11 +18,11 @@ const Card = ({ href, iconBg, icon, title, description }) => {
 
 export default function Dashboard() {
   return (
-    <div className="bg-gray-200 min-h-screen p-6 sm:p-10">
+    <div className="bg-gray-100 min-h-screen p-6 sm:p-10">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card
-            href="/transactions/create"
+            href="/finances/suppliers"
             iconBg="bg-indigo-100"
             icon={
               <svg
@@ -39,8 +39,8 @@ export default function Dashboard() {
                 ></path>
               </svg>
             }
-            title="Create Transaction"
-            description="Create new financial transaction records"
+            title="Data Pemasok"
+            description="Data Pemasok"
           />
 
           <Card
