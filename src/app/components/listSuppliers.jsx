@@ -29,7 +29,7 @@ export default function ListSupplier({ supplier, no }) {
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
-            stroke="rgb(37, 99, 235)"
+            stroke="rgb(255,0,0)"
             className="size-6"
           >
             <path
