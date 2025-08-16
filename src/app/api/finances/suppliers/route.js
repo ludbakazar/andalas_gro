@@ -33,6 +33,7 @@ export async function GET(request) {
   try {
     const suppliers = await prisma.suppliers.findMany({
       where: { status: true },
+      orderBy: { name: "asc" },
     });
     return Response.json(suppliers);
   } catch (error) {

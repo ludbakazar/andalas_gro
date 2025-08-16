@@ -1,15 +1,57 @@
 "use client";
 import ListSupplier from "@/app/components/listSuppliers";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 export default function SuppliersPage() {
   const [supplier, setSupplier] = useState([]);
+
   const [formSupplier, setFormSupplier] = useState({
     code: "",
     name: "",
     address: "",
     phone: "",
   });
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const [isEditMode, setEditMode] = useState(false);
+
+  const [selectedSupplier, setSelectedSupplier] = useState(null);
+
+  const openModal = (supplier = null) => {
+    setEditMode(false);
+    setSelectedSupplier(null);
+    setFormSupplier({
+      code: "",
+      name: "",
+      address: "",
+      phone: "",
+    });
+    if (supplier) {
+      console.log("edit");
+      setSelectedSupplier(supplier);
+      setEditMode(true);
+      setFormSupplier({
+        code: supplier.code || "",
+        name: supplier.name || "",
+        address: supplier.address || "",
+        phone: supplier.phone || "",
+      });
+    }
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedSupplier(null);
+    setModalOpen(false);
+    setFormSupplier({
+      code: "",
+      name: "",
+      address: "",
+      phone: "",
+    });
+  };
 
   const fetchSupplier = async () => {
     try {
@@ -58,13 +100,45 @@ export default function SuppliersPage() {
           address: "",
           phone: "",
         });
-        document.getElementById("my_modal_1").close();
+        closeModal();
       } else {
         console.error("Failed to create supplier");
       }
-      fetchSupplier(); // Refresh the supplier list after adding a new supplier
+      fetchSupplier();
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const editSupplier = async (e) => {
+    e.preventDefault();
+    try {
+      const supplierId = selectedSupplier.id;
+      const data = { supplierId: supplierId, ...formSupplier };
+      const response = await fetch("/api/finances/suppliers", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        closeModal();
+        await Swal.fire({
+          title: "Berhasil",
+          text: "Supplier telah berhasil diedit.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+        fetchSupplier();
+      }
+    } catch (error) {
+      await Swal.fire({
+        title: "Terjadi Kesalahan",
+        text: "Tidak dapat memproses login. Silakan coba lagi nanti.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
@@ -95,9 +169,7 @@ export default function SuppliersPage() {
                   <div className="flex justify-between items-center">
                     <p
                       className="rounded-3xl border-2 m-1 border-blue-400 text-blue-400 px-4 py-2 hover:bg-blue-400 hover:text-white transition-colors cursor-pointer"
-                      onClick={() =>
-                        document.getElementById("my_modal_1").showModal()
-                      }
+                      onClick={() => openModal()}
                     >
                       Tambah Pemasok
                     </p>
@@ -136,6 +208,7 @@ export default function SuppliersPage() {
                           supplier={item}
                           no={index + 1}
                           fetchSupplier={fetchSupplier}
+                          openModal={() => openModal(item)}
                         />
                       ))}
                     </tbody>
@@ -147,66 +220,71 @@ export default function SuppliersPage() {
         </div>
       </div>
 
-      {/* Modal Tambah Pemasok */}
-      <dialog id="my_modal_1" className="modal">
-        <div className="modal-box bg-white rounded-lg shadow-lg p-6">
-          <h3 className="font-bold text-lg text-gray-800 mb-4 text-center">
-            Tambah Pemasok Baru
-          </h3>
+      {isModalOpen && (
+        <dialog id="my_modal_1" className="modal" open>
+          <div className="modal-box bg-white rounded-lg shadow-lg p-6">
+            <h3 className="font-bold text-lg text-gray-800 mb-4 text-center">
+              {isEditMode ? "Edit Pemasok" : "Tambah Pemasok Baru"}
+            </h3>
 
-          <div className="flex flex-col items-center">
-            <input
-              type="text"
-              name="code"
-              placeholder="Kode Pemasok"
-              className="input border bg-gray-200 border-gray-300 rounded-md p-2 mb-4 w-3/4 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={formSupplier.code}
-              onChange={handleChange}
-            />
+            <div className="flex flex-col items-center">
+              <input
+                type="text"
+                name="code"
+                placeholder="Kode Pemasok"
+                className="input border bg-gray-200 border-gray-300 rounded-md p-2 mb-4 w-3/4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                value={formSupplier.code}
+                onChange={handleChange}
+              />
 
-            <input
-              type="text"
-              name="name"
-              placeholder="Nama Pemasok"
-              className="input border bg-gray-200 border-gray-300 rounded-md p-2 mb-4 w-3/4 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={formSupplier.name}
-              onChange={handleChange}
-            />
+              <input
+                type="text"
+                name="name"
+                placeholder="Nama Pemasok"
+                className="input border bg-gray-200 border-gray-300 rounded-md p-2 mb-4 w-3/4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                value={formSupplier.name}
+                onChange={handleChange}
+              />
 
-            <textarea
-              name="address"
-              placeholder="Alamat Pemasok"
-              className="input border bg-gray-200 border-gray-300 rounded-md p-2 mb-4 w-3/4 h-24 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={formSupplier.address}
-              onChange={handleChange}
-            />
+              <textarea
+                name="address"
+                placeholder="Alamat Pemasok"
+                className="input border bg-gray-200 border-gray-300 rounded-md p-2 mb-4 w-3/4 h-24 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                value={formSupplier.address}
+                onChange={handleChange}
+              />
 
-            <input
-              type="text"
-              name="phone"
-              placeholder="Nomor Pemasok"
-              className="input border bg-gray-200 border-gray-300 rounded-md p-2 mb-4 w-3/4 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={formSupplier.phone}
-              onChange={handleChange}
-            />
-          </div>
+              <input
+                type="text"
+                name="phone"
+                placeholder="Nomor Pemasok"
+                className="input border bg-gray-200 border-gray-300 rounded-md p-2 mb-4 w-3/4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                value={formSupplier.phone}
+                onChange={handleChange}
+              />
+            </div>
 
-          <div className="modal-action mt-4 flex justify-center">
-            <button
-              className="btn bg-blue-400 text-white rounded-2xl px-4 py-2 hover:bg-blue-500 transition duration-200 mr-20"
-              onClick={createSupplier}
-            >
-              Simpan
-            </button>
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn bg-white text-blue-400 rounded-2xl px-4 py-2 hover:bg-blue-500 transition duration-200">
-                Tutup
+            <div className="modal-action mt-4 flex justify-center">
+              <button
+                className="btn bg-blue-400 text-white rounded-2xl px-4 py-2 hover:bg-blue-500 transition duration-200 mr-20"
+                onClick={isEditMode ? editSupplier : createSupplier}
+              >
+                Simpan
               </button>
-            </form>
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button
+                  className="btn bg-white text-blue-400 rounded-2xl px-4 py-2 hover:bg-blue-500 transition duration-200"
+                  onClick={closeModal}
+                >
+                  Tutup
+                </button>
+              </form>
+            </div>
           </div>
-        </div>
-      </dialog>
+        </dialog>
+      )}
+      {/* Modal Tambah Pemasok */}
     </>
   );
 }

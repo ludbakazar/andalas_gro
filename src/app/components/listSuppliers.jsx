@@ -2,7 +2,12 @@
 
 import Swal from "sweetalert2";
 
-export default function ListSupplier({ supplier, no, fetchSupplier }) {
+export default function ListSupplier({
+  supplier,
+  no,
+  fetchSupplier,
+  openModal,
+}) {
   const handleDelete = async (supplierId) => {
     try {
       const response = await fetch("/api/finances/suppliers", {
@@ -27,7 +32,6 @@ export default function ListSupplier({ supplier, no, fetchSupplier }) {
           icon: "error",
           confirmButtonText: "OK",
         });
-        console.error("Failed to delete supplier");
       }
     } catch (error) {
       await Swal.fire({
@@ -36,7 +40,6 @@ export default function ListSupplier({ supplier, no, fetchSupplier }) {
         icon: "error",
         confirmButtonText: "OK",
       });
-      console.log(error);
     }
   };
   return (
@@ -56,6 +59,7 @@ export default function ListSupplier({ supplier, no, fetchSupplier }) {
               strokeWidth="1.5"
               stroke="rgb(37, 99, 235)"
               className="size-6 cursor-pointer"
+              onClick={openModal}
             >
               <path
                 strokeLinecap="round"
