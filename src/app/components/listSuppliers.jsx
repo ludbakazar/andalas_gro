@@ -23,22 +23,25 @@ export default function ListSupplier({
           text: "Supplier telah berhasil dihapus.",
           icon: "success",
           confirmButtonText: "OK",
+          confirmButtonColor: "#50a2ff",
         });
         fetchSupplier();
       } else {
         await Swal.fire({
           title: "Terjadi Kesalahan",
-          text: "Tidak dapat memproses login. Silakan coba lagi nanti.",
+          text: "Tidak dapat memproses permintaan. Silakan coba lagi nanti.",
           icon: "error",
           confirmButtonText: "OK",
+          confirmButtonColor: "#50a2ff",
         });
       }
     } catch (error) {
       await Swal.fire({
         title: "Terjadi Kesalahan",
-        text: "Tidak dapat memproses login. Silakan coba lagi nanti.",
+        text: "Tidak dapat memproses permintaan. Silakan coba lagi nanti.",
         icon: "error",
         confirmButtonText: "OK",
+        confirmButtonColor: "#50a2ff",
       });
     }
   };

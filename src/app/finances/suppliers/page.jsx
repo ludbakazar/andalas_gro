@@ -101,12 +101,24 @@ export default function SuppliersPage() {
           phone: "",
         });
         closeModal();
+        await Swal.fire({
+          title: "Berhasil",
+          text: "Supplier telah berhasil diedit.",
+          icon: "success",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#50a2ff",
+        });
       } else {
-        console.error("Failed to create supplier");
       }
       fetchSupplier();
     } catch (error) {
-      console.log(error);
+      await Swal.fire({
+        title: "Terjadi Kesalahan",
+        text: "Tidak dapat memproses permintaan. Silakan coba lagi nanti.",
+        icon: "error",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#50a2ff",
+      });
     }
   };
 
@@ -129,15 +141,17 @@ export default function SuppliersPage() {
           text: "Supplier telah berhasil diedit.",
           icon: "success",
           confirmButtonText: "OK",
+          confirmButtonColor: "#50a2ff",
         });
         fetchSupplier();
       }
     } catch (error) {
       await Swal.fire({
         title: "Terjadi Kesalahan",
-        text: "Tidak dapat memproses login. Silakan coba lagi nanti.",
+        text: "Tidak dapat memproses permintaan. Silakan coba lagi nanti.",
         icon: "error",
         confirmButtonText: "OK",
+        confirmButtonColor: "#50a2ff",
       });
     }
   };
@@ -257,7 +271,7 @@ export default function SuppliersPage() {
               <input
                 type="text"
                 name="phone"
-                placeholder="Nomor Pemasok"
+                placeholder="Nomor Telepon"
                 className="input border bg-gray-200 border-gray-300 rounded-md p-2 mb-4 w-3/4 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 value={formSupplier.phone}
                 onChange={handleChange}

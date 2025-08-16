@@ -6,7 +6,7 @@ export async function POST(request) {
     const userId = Number(request.headers.get("userId"));
     const { code, name, phone, address } = await request.json();
 
-    await prisma.suppliers.create({
+    const newSupplier = await prisma.suppliers.create({
       data: {
         code: code.toUpperCase(),
         name: name.toUpperCase(),
@@ -16,6 +16,18 @@ export async function POST(request) {
         updatedByUserId: userId,
       },
     });
+
+    await prisma.supplierDebts.create({
+      data: {
+        debtAmount: 0,
+        claimAmount: 0,
+        debtPaid: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        supplierId: newSupplier.id,
+      },
+    });
+
     return Response.json(
       {
         message: "Supplier created successfully",
