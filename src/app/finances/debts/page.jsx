@@ -45,11 +45,16 @@ export default function DebtPage() {
                     DATA HUTANG PEMASOK
                   </h1>
                 </div>
-                {/* <div className="flex justify-between items-center">
-                  <p className="rounded-3xl border-2 m-1 border-blue-400 text-blue-400 px-4 py-2 hover:bg-blue-400 hover:text-white transition-colors cursor-pointer">
-                    Tambah Pemasok
+                <div className="flex justify-between items-center">
+                  <p
+                    className="rounded-3xl border-2 m-1 border-blue-400 bg-blue-400 text-white px-4 py-2 hover:bg-blue-500 transition-colors cursor-pointer"
+                    onClick={() =>
+                      alert("Fitur ini belum tersedia, segera hadirkan!")
+                    }
+                  >
+                    DOWNLOAD
                   </p>
-                </div> */}
+                </div>
               </div>
 
               <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-md">

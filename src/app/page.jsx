@@ -66,7 +66,7 @@ export default function Dashboard() {
           />
 
           <Card
-            href="finances/debts"
+            href="customers"
             iconBg="bg-blue-100"
             icon={
               <svg
@@ -83,8 +83,8 @@ export default function Dashboard() {
                 ></path>
               </svg>
             }
-            title="Reports"
-            description="Generate financial reports"
+            title="Tambah Pelanggan"
+            description="Tambah pelanggan baru"
           />
         </div>
       </div>

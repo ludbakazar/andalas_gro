@@ -1,100 +1,77 @@
 "use client";
-import ListSupplier from "@/app/components/listSuppliers";
+
 import { useEffect, useState } from "react";
+import ListCustomer from "../components/listCustomer";
 import Swal from "sweetalert2";
 
-export default function SuppliersPage() {
-  const [supplier, setSupplier] = useState([]);
+export default function CustomersPage() {
+  const [customers, setCustomers] = useState([]);
 
-  const [formSupplier, setFormSupplier] = useState({
-    code: "",
+  const [formCustomer, setFormCustomer] = useState({
     name: "",
     address: "",
     phone: "",
   });
 
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [isEditMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
-  const [selectedSupplier, setSelectedSupplier] = useState(null);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
 
-  const openModal = (supplier = null) => {
+  const openModal = (customer = null) => {
     setEditMode(false);
-    setSelectedSupplier(null);
-    setFormSupplier({
-      code: "",
+    setSelectedCustomer(null);
+    setFormCustomer({
       name: "",
       address: "",
       phone: "",
     });
-    if (supplier) {
-      setSelectedSupplier(supplier);
+    if (customer) {
+      setSelectedCustomer(customer);
       setEditMode(true);
-      setFormSupplier({
-        code: supplier.code || "",
-        name: supplier.name || "",
-        address: supplier.address || "",
-        phone: supplier.phone || "",
+      setFormCustomer({
+        name: customer.name || "",
+        address: customer.address || "",
+        phone: customer.phone || "",
       });
     }
-    setModalOpen(true);
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setSelectedSupplier(null);
-    setModalOpen(false);
-    setFormSupplier({
-      code: "",
+    setIsModalOpen(false);
+    setSelectedCustomer(null);
+    setFormCustomer({
       name: "",
       address: "",
       phone: "",
     });
-  };
-
-  const fetchSupplier = async () => {
-    try {
-      const response = await fetch("/api/finances/suppliers", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setSupplier(data);
-      } else {
-        console.error("Failed to fetch suppliers:", data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   function handleChange(e) {
     const { name, value } = e.target;
-    setFormSupplier((prev) => ({
+    setFormCustomer((prev) => ({
       ...prev,
       [name]: value,
     }));
   }
 
-  const createSupplier = async (e) => {
+  const createCustomer = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/finances/suppliers", {
+      const response = await fetch("/api/customers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formSupplier),
+        body: JSON.stringify(formCustomer),
       });
 
       if (response.ok) {
-        const newSupplier = await response.json();
-        setSupplier((prev) => [...prev, newSupplier]);
-        setFormSupplier({
-          code: "",
+        const newCustomer = await response.json();
+        setCustomers((prev) => [...prev, newCustomer]);
+        setFormCustomer({
           name: "",
           address: "",
           phone: "",
@@ -108,9 +85,17 @@ export default function SuppliersPage() {
           confirmButtonColor: "#50a2ff",
         });
       } else {
+        await Swal.fire({
+          title: "Terjadi Kesalahan",
+          text: "Tidak dapat memproses permintaan. Silakan coba lagi nanti.",
+          icon: "error",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#50a2ff",
+        });
       }
-      fetchSupplier();
+      fetchCustomers();
     } catch (error) {
+      console.log(error);
       await Swal.fire({
         title: "Terjadi Kesalahan",
         text: "Tidak dapat memproses permintaan. Silakan coba lagi nanti.",
@@ -121,12 +106,12 @@ export default function SuppliersPage() {
     }
   };
 
-  const editSupplier = async (e) => {
+  const editCustomer = async (e) => {
     e.preventDefault();
     try {
-      const supplierId = selectedSupplier.id;
-      const data = { supplierId: supplierId, ...formSupplier };
-      const response = await fetch("/api/finances/suppliers", {
+      const customerId = selectedCustomer.id;
+      const data = { customerId: customerId, ...formCustomer };
+      const response = await fetch("/api/customers", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -142,9 +127,10 @@ export default function SuppliersPage() {
           confirmButtonText: "OK",
           confirmButtonColor: "#50a2ff",
         });
-        fetchSupplier();
+        fetchCustomers();
       }
     } catch (error) {
+      console.log(error);
       await Swal.fire({
         title: "Terjadi Kesalahan",
         text: "Tidak dapat memproses permintaan. Silakan coba lagi nanti.",
@@ -155,12 +141,30 @@ export default function SuppliersPage() {
     }
   };
 
-  useEffect(() => {
-    fetchSupplier();
-  }, []);
+  const fetchCustomers = async () => {
+    try {
+      const response = await fetch("api/customers", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch customers");
+      }
+      const data = await response.json();
+      setCustomers(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
   return (
     <>
+      {" "}
       <div className="bg-gray-100 min-h-screen p-6 sm:p-10">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col ">
@@ -176,15 +180,17 @@ export default function SuppliersPage() {
             <div className="flex flex-col min-h-screen  bg-white rounded-lg shadow-md p-6 mt-4">
               <div className="flex flex-col mt-4">
                 <div className="flex justify-between items-center">
-                  <div className="flex justify-between items-center">
-                    <h1 className="p-2 text-2xl font-semibold">Data Pemasok</h1>
+                  <div className="flex justify-between items-center p-2">
+                    <h1 className="p-2 text-2xl font-semibold">
+                      DATA PELANGGAN
+                    </h1>
                   </div>
                   <div className="flex justify-between items-center">
                     <p
                       className="rounded-3xl border-2 m-1 border-blue-400 text-blue-400 px-4 py-2 hover:bg-blue-400 hover:text-white transition-colors cursor-pointer"
                       onClick={() => openModal()}
                     >
-                      Tambah Pemasok
+                      TAMBAH PELANGGAN
                     </p>
                   </div>
                 </div>
@@ -194,14 +200,11 @@ export default function SuppliersPage() {
                     {/* head */}
                     <thead className="bg-gray-100">
                       <tr>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
+                        <th className="px-4 py-2 text-center text-sm font-medium text-gray-600">
                           NO
                         </th>
                         <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
-                          KODE
-                        </th>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
-                          NAMA PEMASOK
+                          NAMA PELANGGAN
                         </th>
                         <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
                           ALAMAT
@@ -215,13 +218,13 @@ export default function SuppliersPage() {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {supplier.map((item, index) => (
-                        <ListSupplier
+                      {customers.map((customer, index) => (
+                        <ListCustomer
                           key={index}
-                          supplier={item}
-                          no={index + 1}
-                          fetchSupplier={fetchSupplier}
-                          openModal={() => openModal(item)}
+                          customer={customer}
+                          index={index + 1}
+                          fetchCustomers={fetchCustomers}
+                          openModal={openModal}
                         />
                       ))}
                     </tbody>
@@ -232,38 +235,28 @@ export default function SuppliersPage() {
           </div>
         </div>
       </div>
-
       {isModalOpen && (
         <dialog id="my_modal_1" className="modal" open>
           <div className="modal-box bg-white rounded-lg shadow-lg p-6">
             <h3 className="font-bold text-lg text-gray-800 mb-4 text-center">
-              {isEditMode ? "Edit Pemasok" : "Tambah Pemasok Baru"}
+              {editMode ? "Edit Pelanggan" : "Tambah Pelanggan"}
             </h3>
 
             <div className="flex flex-col items-center">
               <input
                 type="text"
-                name="code"
-                placeholder="Kode Pemasok"
-                className="input border bg-gray-200 border-gray-300 rounded-md p-2 mb-4 w-3/4 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                value={formSupplier.code}
-                onChange={handleChange}
-              />
-
-              <input
-                type="text"
                 name="name"
-                placeholder="Nama Pemasok"
+                placeholder="Nama Pelanggan"
                 className="input border bg-gray-200 border-gray-300 rounded-md p-2 mb-4 w-3/4 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                value={formSupplier.name}
+                value={formCustomer.name}
                 onChange={handleChange}
               />
 
               <textarea
                 name="address"
-                placeholder="Alamat Pemasok"
+                placeholder="Alamat Pelanggan"
                 className="input border bg-gray-200 border-gray-300 rounded-md p-2 mb-4 w-3/4 h-24 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                value={formSupplier.address}
+                value={formCustomer.address}
                 onChange={handleChange}
               />
 
@@ -272,7 +265,7 @@ export default function SuppliersPage() {
                 name="phone"
                 placeholder="Nomor Telepon"
                 className="input border bg-gray-200 border-gray-300 rounded-md p-2 mb-4 w-3/4 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                value={formSupplier.phone}
+                value={formCustomer.phone}
                 onChange={handleChange}
               />
             </div>
@@ -280,7 +273,7 @@ export default function SuppliersPage() {
             <div className="modal-action mt-4 flex justify-center">
               <button
                 className="btn bg-blue-400 text-white rounded-2xl px-4 py-2 hover:bg-blue-500 transition duration-200 mr-20"
-                onClick={isEditMode ? editSupplier : createSupplier}
+                onClick={editMode ? editCustomer : createCustomer}
               >
                 Simpan
               </button>
@@ -297,7 +290,6 @@ export default function SuppliersPage() {
           </div>
         </dialog>
       )}
-      {/* Modal Tambah Pemasok */}
     </>
   );
 }
