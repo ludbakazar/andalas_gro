@@ -44,7 +44,7 @@ export default function Dashboard() {
           />
 
           <Card
-            href="/transactions"
+            href="finances/debts"
             iconBg="bg-green-100"
             icon={
               <svg
@@ -61,12 +61,12 @@ export default function Dashboard() {
                 ></path>
               </svg>
             }
-            title="Transaction List"
-            description="View all transaction records"
+            title="Hutang Pemasok"
+            description="#"
           />
 
           <Card
-            href="#"
+            href="finances/debts"
             iconBg="bg-blue-100"
             icon={
               <svg
