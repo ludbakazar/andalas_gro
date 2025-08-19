@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function TableInventory({ onTotalChange }) {
+export default function TableInventory({ onTotalChange, i }) {
   const [qty, setQty] = useState(0);
   const [hargaBeli, setHargaBeli] = useState(0);
   const [total, setTotal] = useState(0);
@@ -24,8 +24,9 @@ export default function TableInventory({ onTotalChange }) {
   const calculateTotal = (qty, hargaBeli) => {
     const newTotal = qty * hargaBeli;
     setTotal(newTotal);
+
     if (onTotalChange) {
-      onTotalChange(newTotal);
+      onTotalChange({ i, total: newTotal });
     }
   };
 

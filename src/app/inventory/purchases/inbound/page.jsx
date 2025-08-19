@@ -45,8 +45,8 @@ export default function InboundPage() {
     }
   };
 
-  const handleGrandTotalChange = (newTotal) => {
-    setGrandTotal((prevTotal) => prevTotal + newTotal);
+  const handleGrandTotalChange = ({ i, total }) => {
+    setGrandTotal((prev) => ({ ...prev, [i]: total }));
   };
 
   useEffect(() => {
@@ -70,7 +70,8 @@ export default function InboundPage() {
   const filteredSuppliers = suppliers.filter((supplier) =>
     supplier.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log(grandTotal);
+
+  const gTot = Object.values(grandTotal).reduce((sum, val) => sum + val, 0);
 
   return (
     <div className="bg-gray-100 min-h-screen p-6 sm:p-10">
@@ -206,6 +207,7 @@ export default function InboundPage() {
                         <TableInventory
                           key={index}
                           onTotalChange={handleGrandTotalChange}
+                          i={index}
                         />
                       ))}
                     </tbody>
@@ -222,7 +224,7 @@ export default function InboundPage() {
                 <div className="rounded-2xl shadow p-4 w-full md:w-1/3 ml-auto mt-6 bg-white">
                   <div className="flex justify-between font-bold text-lg  pt-2">
                     <span>Total</span>
-                    <span>{grandTotal.toLocaleString("id-ID")}</span>
+                    <span>{gTot.toLocaleString("id-ID")}</span>
                   </div>
                 </div>
                 <div className="flex gap-4 justify-end mt-8">
