@@ -94,6 +94,22 @@ export default function TableInventory({ onTotalChange, i, setItems }) {
           />
         </td>
         <td className="p-3">
+          <select
+            name="unit"
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+            onChange={handleChange}
+          >
+            <option value="BUAH">BUAH</option>
+            <option value="SET">SET</option>
+            <option value="PSG">PSG</option>
+            <option value="STEL">STEL</option>
+            <option value="TBG">TBG</option>
+            <option value="KTK">KTK</option>
+            <option value="PCS">PCS</option>
+            <option value="BTL">BTL</option>
+          </select>
+        </td>
+        <td className="p-3">
           <input
             type="text"
             placeholder="0"

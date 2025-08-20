@@ -14,6 +14,10 @@ export default function InboundPage() {
   const [grandTotal, setGrandTotal] = useState(0);
   const [invoiceNumber, setInvoiceNumber] = useState("");
 
+  const getCurrentDate = () => {
+    return new Date().toISOString().split("T")[0];
+  };
+
   const [items, setItems] = useState([
     {
       code: "",
@@ -21,6 +25,7 @@ export default function InboundPage() {
       brand: "",
       type: "",
       size: "",
+      unit: "",
       qty: 0,
       basicPrice: 0,
     },
@@ -30,11 +35,12 @@ export default function InboundPage() {
     const now = new Date();
     const year = now.getFullYear();
     const month = (now.getMonth() + 1).toString().padStart(2, "0");
+    const day = now.getDate().toString().padStart(2, "0");
     const poNumber = Math.floor(Math.random() * 10000)
       .toString()
       .padStart(5, "0");
 
-    setInvoiceNumber(`${poType}-${year}${month}-${poNumber}`);
+    setInvoiceNumber(`${poType}-${year}${month}${day}-${poNumber}`);
   };
 
   const fetchSupplier = async () => {
@@ -75,6 +81,34 @@ export default function InboundPage() {
   );
   const gTot = Object.values(grandTotal).reduce((sum, val) => sum + val, 0);
 
+  const submitPo = async () => {
+    const data = {
+      supplierId: selectedSupplier.id,
+      date: getCurrentDate(),
+      invoiceNumber,
+      items: items,
+    };
+
+    try {
+      const response = await fetch("/api/inventory/purchases", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit purchase order");
+      }
+
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="bg-gray-100 min-h-screen p-6 sm:p-10">
       <div className="max-w-7xl mx-auto">
@@ -102,7 +136,7 @@ export default function InboundPage() {
                     <input
                       type="date"
                       className={`border-2 border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200 text-gray-500 cursor-not-allowed`}
-                      defaultValue={new Date().toISOString().split("T")[0]}
+                      defaultValue={getCurrentDate()}
                       readOnly
                       disabled
                     />
@@ -152,7 +186,7 @@ export default function InboundPage() {
                                 setIsDropdownOpen(false);
                               }}
                             >
-                              {supplier.name} {/* Display supplier name */}
+                              {supplier.name}
                             </div>
                           ))}
                         </div>
@@ -178,29 +212,32 @@ export default function InboundPage() {
                   <table className="min-w-full">
                     <thead className="bg-gray-100">
                       <tr>
+                        <th className="p-3 text-left text-sm font-medium text-gray-700 w-30 ">
+                          KODE
+                        </th>
+                        <th className="p-3 text-left text-sm font-medium text-gray-700 w-45">
+                          NAMA
+                        </th>
+                        <th className="p-3 text-left text-sm font-medium text-gray-700 w-45">
+                          MERK
+                        </th>
+                        <th className="p-3 text-left text-sm font-medium text-gray-700 w-45">
+                          TIPE
+                        </th>
+                        <th className="p-3 text-left text-sm font-medium text-gray-700 w-10">
+                          UKURAN
+                        </th>
                         <th className="p-3 text-left text-sm font-medium text-gray-700 w-30">
-                          Kode Barang
-                        </th>
-                        <th className="p-3 text-left text-sm font-medium text-gray-700 w-45">
-                          Nama
-                        </th>
-                        <th className="p-3 text-left text-sm font-medium text-gray-700 w-45">
-                          Merk
-                        </th>
-                        <th className="p-3 text-left text-sm font-medium text-gray-700 w-45">
-                          Type
+                          UNIT
                         </th>
                         <th className="p-3 text-left text-sm font-medium text-gray-700 w-20">
-                          Ukuran
+                          QTY
                         </th>
-                        <th className="p-3 text-left text-sm font-medium text-gray-700 w-20">
-                          Qty
-                        </th>
-                        <th className="p-3 text-left text-sm font-medium text-gray-700 w-45">
-                          Harga Beli
+                        <th className="p-3 text-left text-sm font-medium text-gray-700 w-35">
+                          HARGA BELI
                         </th>
                         <th className="p-3 text-left text-sm font-medium text-gray-700">
-                          Total
+                          TOTAL
                         </th>
                       </tr>
                     </thead>
@@ -235,7 +272,10 @@ export default function InboundPage() {
                     Batal
                   </button>
 
-                  <button className="px-6 py-2.5 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                  <button
+                    className="px-6 py-2.5 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    onClick={submitPo}
+                  >
                     Simpan
                   </button>
                 </div>
