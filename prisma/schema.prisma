@@ -48,7 +48,7 @@ model Suppliers{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   supplierDebts SupplierDebts?
-  purchaseOrders PurchasesOrders[]
+  purchaseOrders PurchasesOrders?
 }
 
 model SupplierDebts{

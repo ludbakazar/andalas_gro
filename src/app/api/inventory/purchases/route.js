@@ -1,4 +1,5 @@
 import errorHandler from "@/lib/errorHandler";
+import { transformBigInt } from "@/lib/helpers";
 import prisma from "@/lib/prisma";
 
 export async function POST(request) {
@@ -89,6 +90,32 @@ export async function POST(request) {
       },
     });
     return Response.json({ message: "Purchase order created successfully" });
+  } catch (error) {
+    return errorHandler(error);
+  }
+}
+
+export async function GET(request) {
+  try {
+    const data = await prisma.purchasesOrders.findMany({
+      where: {
+        status: true,
+      },
+      include: {
+        supplier: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    const transformedData = JSON.parse(
+      JSON.stringify(data, (key, value) => transformBigInt(value))
+    );
+
+    return Response.json({ data: transformedData });
   } catch (error) {
     return errorHandler(error);
   }
