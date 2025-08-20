@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function TableInventory({ onTotalChange, i }) {
+export default function TableInventory({ onTotalChange, i, setItems }) {
   const [qty, setQty] = useState(0);
   const [hargaBeli, setHargaBeli] = useState(0);
   const [total, setTotal] = useState(0);
@@ -11,6 +11,11 @@ export default function TableInventory({ onTotalChange, i }) {
     e.target.value = formattedValue;
     setQty(Number(value));
     calculateTotal(Number(value), hargaBeli);
+    setItems((prevItems) => {
+      const updatedItems = [...prevItems];
+      updatedItems[i] = { ...updatedItems[i], qty: Number(value) };
+      return updatedItems;
+    });
   };
 
   const handleHargaBeliChange = (e) => {
@@ -19,7 +24,22 @@ export default function TableInventory({ onTotalChange, i }) {
     e.target.value = formattedValue;
     setHargaBeli(Number(value));
     calculateTotal(qty, Number(value));
+    setItems((prevItems) => {
+      const updatedItems = [...prevItems];
+      updatedItems[i] = { ...updatedItems[i], basicPrice: Number(value) };
+      return updatedItems;
+    });
   };
+
+  function handleChange(e) {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setItems((prevItems) => {
+      const updatedItems = [...prevItems];
+      updatedItems[i] = { ...updatedItems[i], [name]: value };
+      return updatedItems;
+    });
+  }
 
   const calculateTotal = (qty, hargaBeli) => {
     const newTotal = qty * hargaBeli;
@@ -36,31 +56,41 @@ export default function TableInventory({ onTotalChange, i }) {
         <td className="p-3">
           <input
             placeholder="Kode"
+            name="code"
             className="border border-gray-300 rounded-md p-2 w-full"
+            onChange={handleChange}
           />
         </td>
         <td className="p-3">
           <input
             placeholder="Nama Barang"
+            name="name"
             className="border border-gray-300 rounded-md p-2 w-full"
+            onChange={handleChange}
           />
         </td>
         <td className="p-3">
           <input
             placeholder="Merk"
+            name="brand"
             className="border border-gray-300 rounded-md p-2 w-full"
+            onChange={handleChange}
           />
         </td>
         <td className="p-3">
           <input
             placeholder="Type"
+            name="type"
             className="border border-gray-300 rounded-md p-2 w-full"
+            onChange={handleChange}
           />
         </td>
         <td className="p-3">
           <input
             placeholder="Uk"
+            name="size"
             className="border border-gray-300 rounded-md p-2 w-full"
+            onChange={handleChange}
           />
         </td>
         <td className="p-3">

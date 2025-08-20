@@ -3,14 +3,6 @@
 import TableInventory from "@/app/components/tableIventory";
 import { useEffect, useState } from "react";
 
-// const suppliers = [
-//   "PT. Supplier Abadi Jaya",
-//   "CV. Makmur Sentosa",
-//   "UD. Sumber Rejeki",
-//   "Toko Bangunan Jaya",
-//   "Supplier Bahan Bangunan Prima",
-// ];
-
 export default function InboundPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -20,8 +12,19 @@ export default function InboundPage() {
     name: "",
   });
   const [grandTotal, setGrandTotal] = useState(0);
-
   const [invoiceNumber, setInvoiceNumber] = useState("");
+
+  const [items, setItems] = useState([
+    {
+      code: "",
+      name: "",
+      brand: "",
+      type: "",
+      size: "",
+      qty: 0,
+      basicPrice: 0,
+    },
+  ]);
 
   const generateInvoiceNumber = (poType = "PO") => {
     const now = new Date();
@@ -70,7 +73,6 @@ export default function InboundPage() {
   const filteredSuppliers = suppliers.filter((supplier) =>
     supplier.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
   const gTot = Object.values(grandTotal).reduce((sum, val) => sum + val, 0);
 
   return (
@@ -208,6 +210,7 @@ export default function InboundPage() {
                           key={index}
                           onTotalChange={handleGrandTotalChange}
                           i={index}
+                          setItems={setItems}
                         />
                       ))}
                     </tbody>
