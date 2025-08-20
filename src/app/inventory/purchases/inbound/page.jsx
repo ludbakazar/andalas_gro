@@ -1,6 +1,7 @@
 "use client";
 
 import TableInventory from "@/app/components/tableIventory";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function InboundPage() {
@@ -103,7 +104,6 @@ export default function InboundPage() {
       }
 
       const result = await response.json();
-      console.log(result);
     } catch (error) {
       console.log(error);
     }
