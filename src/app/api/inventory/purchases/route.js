@@ -115,7 +115,7 @@ export async function GET(request) {
       JSON.stringify(data, (key, value) => transformBigInt(value))
     );
 
-    return Response.json({ data: transformedData });
+    return Response.json(transformedData);
   } catch (error) {
     return errorHandler(error);
   }
