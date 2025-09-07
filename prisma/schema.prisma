@@ -48,7 +48,7 @@ model Suppliers{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   supplierDebts SupplierDebts?
-  purchaseOrders PurchasesOrders?
+  purchaseOrders PurchasesOrders[]
 }
 
 model SupplierDebts{
@@ -98,7 +98,7 @@ model PurchasesOrders{
   id Int @id @default(autoincrement())
   invNumber String
   supplier Suppliers @relation(fields: [supplierId], references: [id])
-  supplierId Int @unique
+  supplierId Int 
   invoiceStatus String
   total BigInt
   status Boolean @default(true)

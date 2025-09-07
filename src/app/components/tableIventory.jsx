@@ -98,6 +98,7 @@ export default function TableInventory({ onTotalChange, i, setItems }) {
             name="unit"
             className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
             onChange={handleChange}
+            defaultValue="BUAH"
           >
             <option value="BUAH">BUAH</option>
             <option value="SET">SET</option>

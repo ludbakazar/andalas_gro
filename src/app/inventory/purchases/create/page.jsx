@@ -1,10 +1,11 @@
 "use client";
 
 import TableInventory from "@/app/components/tableIventory";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function InboundPage() {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [suppliers, setSuppliers] = useState([]);
@@ -26,7 +27,7 @@ export default function InboundPage() {
       brand: "",
       type: "",
       size: "",
-      unit: "",
+      unit: "BUAH",
       qty: 0,
       basicPrice: 0,
     },
@@ -104,6 +105,7 @@ export default function InboundPage() {
       }
 
       const result = await response.json();
+      // router.push("/inventory/purchases");
     } catch (error) {
       console.log(error);
     }
@@ -115,7 +117,7 @@ export default function InboundPage() {
         <div className="flex flex-col">
           <div className="flex justify-between items-center mb-6">
             <a
-              href="/"
+              href="/inventory/purchases"
               className="rounded-full border-2 border-blue-500 text-blue-500 px-6 py-2 hover:bg-blue-500 hover:text-white transition-colors duration-300"
             >
               Kembali

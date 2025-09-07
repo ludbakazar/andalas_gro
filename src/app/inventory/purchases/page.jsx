@@ -1,6 +1,7 @@
 "use client";
 
 import ListPurchases from "@/app/components/listPurchases";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function PurchasesPage() {
@@ -48,7 +49,10 @@ export default function PurchasesPage() {
                     </h1>
                   </div>
                   <div className="flex justify-between items-center">
-                    <p className="rounded-3xl border-2 m-1 border-blue-400 text-blue-400 px-4 py-2 hover:bg-blue-400 hover:text-white transition-colors cursor-pointer">
+                    <p
+                      className="rounded-3xl border-2 m-1 border-blue-400 text-blue-400 px-4 py-2 hover:bg-blue-400 hover:text-white transition-colors cursor-pointer"
+                      onClick={() => redirect("/inventory/purchases/create")}
+                    >
                       TAMBAH PEMBELIAN
                     </p>
                   </div>
