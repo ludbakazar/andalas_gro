@@ -55,9 +55,9 @@ model SupplierDebts{
   id Int @id @default(autoincrement())
   supplier Suppliers @relation(fields: [supplierId], references: [id])
   supplierId Int @unique
-  debtAmount BigInt
-  claimAmount BigInt
-  debtPaid BigInt
+  debtAmount Decimal @db.Decimal(20, 2)
+  claimAmount Decimal @db.Decimal(20, 2)
+  debtPaid Decimal @db.Decimal(20, 2)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -100,7 +100,7 @@ model PurchasesOrders{
   supplier Suppliers @relation(fields: [supplierId], references: [id])
   supplierId Int 
   invoiceStatus String
-  total BigInt
+  total Decimal @db.Decimal(20, 2)
   status Boolean @default(true)
   createdById Int
   updatedById Int

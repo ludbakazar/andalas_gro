@@ -1,5 +1,5 @@
 import errorHandler from "@/lib/errorHandler";
-import { transformBigInt } from "@/lib/helpers";
+
 import prisma from "@/lib/prisma";
 
 export async function POST(request) {
@@ -133,11 +133,7 @@ export async function GET(request) {
       },
     });
 
-    const transformedData = JSON.parse(
-      JSON.stringify(data, (key, value) => transformBigInt(value))
-    );
-
-    return Response.json(transformedData);
+    return Response.json(data);
   } catch (error) {
     return errorHandler(error);
   }

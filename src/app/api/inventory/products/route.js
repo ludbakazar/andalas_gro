@@ -1,28 +1,26 @@
 import errorHandler from "@/lib/errorHandler";
-
 import prisma from "@/lib/prisma";
 
 export async function GET(request) {
   try {
-    const supplierDebt = await prisma.suppliers.findMany({
+    const products = await prisma.products.findMany({
       where: {
         status: true,
       },
       select: {
+        id: true,
+        code: true,
         name: true,
-        supplierDebts: {
-          select: {
-            debtAmount: true,
-            claimAmount: true,
-            debtPaid: true,
-          },
-        },
+        brand: true,
+        type: true,
+        size: true,
+        unit: true,
+        basicPrice: true,
+        qty: true,
       },
     });
-
-    return Response.json(supplierDebt);
+    return Response.json(products);
   } catch (error) {
-    console.log(error);
     return errorHandler(error);
   }
 }

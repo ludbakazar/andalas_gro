@@ -1,5 +1,5 @@
 import errorHandler from "@/lib/errorHandler";
-import { transformBigInt, transformObjectBigInt } from "@/lib/helpers";
+
 import prisma from "@/lib/prisma";
 
 export async function GET(request) {
@@ -38,9 +38,8 @@ export async function GET(request) {
         },
       },
     });
-    const data = transformObjectBigInt(purchaseOrder);
 
-    return Response.json(data);
+    return Response.json(purchaseOrder);
   } catch (error) {
     return errorHandler(error);
   }
