@@ -1,6 +1,8 @@
 "use client";
 
 import Loading from "@/app/components/loading";
+import PurchaseOrderPDF from "@/app/components/print/purchaseOrderPDF";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -59,6 +61,19 @@ export default function DetailPurchasePage() {
             >
               Kembali
             </a>
+            <PDFDownloadLink
+              document={<PurchaseOrderPDF PO={PO} />}
+              fileName={`PurchaseOrder-${PO.invNumber || "export"}.pdf`}
+            >
+              {({ loading }) => (
+                <button
+                  disabled={loading}
+                  className="rounded-3xl bg-green-500 text-white px-4 py-2 hover:bg-green-600 transition-colors"
+                >
+                  {loading ? "Menyiapkan PDF..." : "Download PDF"}
+                </button>
+              )}
+            </PDFDownloadLink>
           </div>
 
           {/* Card detail PO */}
