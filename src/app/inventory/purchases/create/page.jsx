@@ -105,7 +105,7 @@ export default function InboundPage() {
       }
 
       const result = await response.json();
-      // router.push("/inventory/purchases");
+      router.push("/inventory/purchases");
     } catch (error) {
       console.log(error);
     }

@@ -5,6 +5,18 @@ export const transformBigInt = (value) => {
   return value;
 };
 
+export const transformObjectBigInt = (obj) => {
+  if (obj === null || obj === undefined) return obj;
+  if (Array.isArray(obj)) {
+    return obj.map((item) => transformObjectBigInt(item));
+  }
+  const newObj = {};
+  for (const key in obj) {
+    newObj[key] = transformBigInt(obj[key]);
+  }
+  return newObj;
+};
+
 export const formatNumber = (value) => {
   const num = Number(value || 0);
   return num.toLocaleString("id-ID");
