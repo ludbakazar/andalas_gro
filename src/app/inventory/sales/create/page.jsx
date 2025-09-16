@@ -23,6 +23,7 @@ export default function InboundPage() {
   ]);
   const [grandTotal, setGrandTotal] = useState(0);
   const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("cash");
 
   const getCurrentDate = () => {
     return new Date().toISOString().split("T")[0];
@@ -85,8 +86,8 @@ export default function InboundPage() {
       date: getCurrentDate(),
       invoiceNumber,
       items: selectedProducts,
+      paymentMethod,
     };
-    console.log(data);
 
     // try {
     //   const response = await fetch("/api/inventory/purchases", {
@@ -198,6 +199,23 @@ export default function InboundPage() {
                       name="supplier_id"
                       value={selectedCustomer.id || ""}
                     />
+                  </div>
+
+                  <div className="grid gap-2 relative">
+                    <label className="text-sm font-medium text-gray-700">
+                      Pembayaran
+                    </label>
+                    <div className="relative">
+                      <select
+                        name="paymentMethod"
+                        id="paymentMethod"
+                        className="border-2 border-gray-300 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                      >
+                        <option value="cash">Cash</option>
+                        <option value="credit">Credit</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>

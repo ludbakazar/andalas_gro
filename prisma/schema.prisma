@@ -72,7 +72,20 @@ model Customers {
   updatedByUserId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  customerDebts CustomerDebts?
+  salesOrders SalesOrders[]
 
+}
+
+model CustomerDebts {
+  id Int @id @default(autoincrement())
+  customer Customers @relation(fields: [customerId], references: [id])
+  customerId Int @unique
+  debtAmount Decimal @db.Decimal(20, 2)
+  claimAmount Decimal @db.Decimal(20, 2)
+  debtPaid Decimal @db.Decimal(20, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 
@@ -92,6 +105,7 @@ model Products{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   purchaseOrderItems PurchasesOrdersItems[]
+  salesOrderItems SalesOrdersItems[]
 }
 
 model PurchasesOrders{
@@ -127,6 +141,38 @@ model PurchasesOrdersItems{
 
   @@id([productId, purchaseOrderId])
 }
+
+model SalesOrders{
+  id Int @id @default(autoincrement())
+  invNumber String
+  customer Customers @relation(fields: [customerId], references: [id])
+  customerId Int 
+  paymentMethod String
+  total Decimal @db.Decimal(20, 2)
+  status Boolean @default(true)
+  createdById Int
+  updatedById Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  salesOrderItems SalesOrdersItems[]
+}
+
+model SalesOrdersItems{
+  salesOrder SalesOrders @relation(fields: [salesOrderId], references: [id])
+  salesOrderId Int
+  product Products @relation(fields: [productId], references: [id])
+  productId Int
+  qty Int
+  basicPrice Decimal @db.Decimal(20, 2)
+  sellingPrice Decimal @db.Decimal(20, 2)
+  createdById Int
+  updatedById Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([productId, salesOrderId])
+}
+
 
 enum Role {
   admin

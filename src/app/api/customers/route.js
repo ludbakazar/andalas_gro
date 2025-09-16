@@ -12,6 +12,15 @@ export async function POST(request) {
         address: address.toUpperCase(),
         createdByUserId: userId,
         updatedByUserId: userId,
+        customerDebts: {
+          create: {
+            debtAmount: 0,
+            debtPaid: 0,
+            claimAmount: 0,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        },
       },
     });
     return Response.json(
