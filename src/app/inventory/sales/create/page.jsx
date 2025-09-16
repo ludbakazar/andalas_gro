@@ -18,6 +18,7 @@ export default function InboundPage() {
     {
       id: null,
       qty: 0,
+      basicPrice: 0,
       sellingPrice: 0,
     },
   ]);
@@ -87,26 +88,27 @@ export default function InboundPage() {
       invoiceNumber,
       items: selectedProducts,
       paymentMethod,
+      total: gTot,
     };
 
-    // try {
-    //   const response = await fetch("/api/inventory/purchases", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(data),
-    //   });
+    try {
+      const response = await fetch("/api/inventory/sales", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-    //   if (!response.ok) {
-    //     throw new Error("Failed to submit purchase order");
-    //   }
+      if (!response.ok) {
+        throw new Error("Failed to submit purchase order");
+      }
 
-    //   const result = await response.json();
-    //   router.push("/inventory/purchases");
-    // } catch (error) {
-    //   console.log(error);
-    // }
+      const result = await response.json();
+      router.push("/inventory/sales");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -145,8 +145,10 @@ model PurchasesOrdersItems{
 model SalesOrders{
   id Int @id @default(autoincrement())
   invNumber String
+  date DateTime
   customer Customers @relation(fields: [customerId], references: [id])
-  customerId Int 
+  customerId Int
+  paymentStatus String
   paymentMethod String
   total Decimal @db.Decimal(20, 2)
   status Boolean @default(true)
@@ -178,3 +180,4 @@ enum Role {
   admin
   employee
 }
+

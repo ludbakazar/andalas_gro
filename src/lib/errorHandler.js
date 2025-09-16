@@ -11,7 +11,6 @@ export default function errorHandler(error) {
     message = "Validation Error: " + error.message;
     status = 422;
   }
-  console.log(message);
 
   return Response.json(
     {

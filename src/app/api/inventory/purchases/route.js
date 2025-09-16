@@ -70,7 +70,6 @@ export async function POST(request) {
           },
         });
       }
-      console.log(exsistProduct);
       await prisma.products.update({
         where: {
           id: exsistProduct.id,

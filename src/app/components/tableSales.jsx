@@ -30,15 +30,29 @@ export default function TabelSales({ onTotalChange, i, setItems }) {
 
   const handleQtyChange = (e) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
-    const formattedValue = new Intl.NumberFormat("id-ID").format(value);
+    const numericValue = Number(value);
+
+    // Validasi: tidak boleh melebihi stok produk
+    const maxQty = selectedProduct.qty || 0;
+    const limitedValue = Math.min(numericValue, maxQty);
+
+    const formattedValue = new Intl.NumberFormat("id-ID").format(limitedValue);
     e.target.value = formattedValue;
-    setQty(Number(value));
-    calculateTotal(Number(value), sellingPrice);
-    setItems((prevItems) => {
-      const updatedItems = [...prevItems];
-      updatedItems[i] = { ...updatedItems[i], qty: Number(value) };
-      return updatedItems;
-    });
+
+    setQty(limitedValue);
+    calculateTotal(limitedValue, sellingPrice);
+
+    if (selectedProduct.id) {
+      setItems((prevItems) => {
+        const updatedItems = [...prevItems];
+        updatedItems[i] = {
+          ...updatedItems[i],
+          qty: limitedValue,
+          sellingPrice: sellingPrice,
+        };
+        return updatedItems;
+      });
+    }
   };
 
   const handleSellingPriceChange = (e) => {
@@ -133,6 +147,7 @@ export default function TabelSales({ onTotalChange, i, setItems }) {
                         updatedItems[i] = {
                           ...updatedItems[i],
                           id: product.id,
+                          basicPrice: product.basicPrice,
                         };
                         return updatedItems;
                       });
