@@ -7,6 +7,8 @@ export default function InvoiceStatus({ status }) {
         return "SETENGAH BAYAR";
       case "paidOff":
         return "LUNAS";
+      case "paid":
+        return "LUNAS";
       default:
         return status; // fallback untuk status yang tidak dikenal
     }
@@ -19,6 +21,8 @@ export default function InvoiceStatus({ status }) {
       case "halfPaid":
         return "text-yellow-600 bg-yellow-100";
       case "paidOff":
+        return "text-green-600 bg-green-100";
+      case "paid":
         return "text-green-600 bg-green-100";
       default:
         return "text-gray-600 bg-gray-100";

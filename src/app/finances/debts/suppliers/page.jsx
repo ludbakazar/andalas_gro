@@ -8,7 +8,7 @@ export default function DebtPage() {
 
   const fetchSupplierDebts = async () => {
     try {
-      const response = await fetch("/api/finances/debts", {
+      const response = await fetch("/api/finances/debts/suppliers", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

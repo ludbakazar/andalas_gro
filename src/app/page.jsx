@@ -22,7 +22,7 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card
-            href="/finances/suppliers"
+            href="/suppliers"
             iconBg="bg-indigo-100"
             icon={
               <svg
@@ -44,7 +44,7 @@ export default function Dashboard() {
           />
 
           <Card
-            href="finances/debts"
+            href="finances/debts/suppliers"
             iconBg="bg-green-100"
             icon={
               <svg

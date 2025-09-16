@@ -4,7 +4,7 @@ export default function PaymentStatus({ status }) {
       case "credit":
         return "HUTANG";
       case "cash":
-        return "LUNAS";
+        return "CASH";
 
       default:
         return status; // fallback untuk status yang tidak dikenal

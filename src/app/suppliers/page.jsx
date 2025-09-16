@@ -54,7 +54,7 @@ export default function SuppliersPage() {
 
   const fetchSupplier = async () => {
     try {
-      const response = await fetch("/api/finances/suppliers", {
+      const response = await fetch("/api/suppliers", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export default function SuppliersPage() {
   const createSupplier = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/finances/suppliers", {
+      const response = await fetch("/api/suppliers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
