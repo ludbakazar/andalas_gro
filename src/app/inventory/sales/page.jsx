@@ -1,22 +1,23 @@
 "use client";
 
 import ListPurchases from "@/app/components/listPurchases";
+import ListSales from "@/app/components/listSales";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SalesPage() {
-  const [purchases, setPurchases] = useState([]);
+  const [sales, setSales] = useState([]);
 
   const fetchPurchases = async () => {
     try {
-      const response = await fetch("/api/inventory/purchases", {
+      const response = await fetch("/api/inventory/sales", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
       const data = await response.json();
-      setPurchases(data);
+      setSales(data);
     } catch (error) {
       console.log(error);
     }
@@ -78,6 +79,9 @@ export default function SalesPage() {
                         <th className="px-4 py-2 text-left text-sm font-medium text-gray-600 w-35">
                           TOTAL
                         </th>
+                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-600 w-35">
+                          JENIS PEMBAYARAN
+                        </th>
                         <th className="px-4 py-2 text-left text-sm font-medium text-gray-600 w-50">
                           STATUS TAGIHAN
                         </th>
@@ -87,12 +91,8 @@ export default function SalesPage() {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {purchases.map((purchase, index) => (
-                        <ListPurchases
-                          key={index}
-                          purchase={purchase}
-                          i={index + 1}
-                        />
+                      {sales.map((sale, index) => (
+                        <ListSales key={index} sale={sale} i={index + 1} />
                       ))}
                     </tbody>
                   </table>

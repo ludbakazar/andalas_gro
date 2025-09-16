@@ -66,3 +66,25 @@ export async function POST(request) {
     return errorHandler(error);
   }
 }
+
+export async function GET(request) {
+  try {
+    const sales = await prisma.salesOrders.findMany({
+      where: {
+        status: true,
+      },
+      include: {
+        customer: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    return Response.json(sales);
+  } catch (error) {
+    return errorHandler(error);
+  }
+}

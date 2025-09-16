@@ -1,12 +1,11 @@
-export default function InvoiceStatus({ status }) {
+export default function PaymentStatus({ status }) {
   const getStatusText = (status) => {
     switch (status) {
-      case "unpaid":
-        return "BELUM BAYAR";
-      case "halfPaid":
-        return "SETENGAH BAYAR";
-      case "paidOff":
+      case "credit":
+        return "HUTANG";
+      case "cash":
         return "LUNAS";
+
       default:
         return status; // fallback untuk status yang tidak dikenal
     }
@@ -14,11 +13,9 @@ export default function InvoiceStatus({ status }) {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case "unpaid":
+      case "credit":
         return "text-red-600 bg-red-100";
-      case "halfPaid":
-        return "text-yellow-600 bg-yellow-100";
-      case "paidOff":
+      case "cash":
         return "text-green-600 bg-green-100";
       default:
         return "text-gray-600 bg-gray-100";
