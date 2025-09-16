@@ -20,18 +20,7 @@ export default function InboundPage() {
     return new Date().toISOString().split("T")[0];
   };
 
-  const [items, setItems] = useState([
-    {
-      code: "",
-      name: "",
-      brand: "",
-      type: "",
-      size: "",
-      unit: "BUAH",
-      qty: 0,
-      basicPrice: 0,
-    },
-  ]);
+  const [items, setItems] = useState([{}]);
 
   const generateInvoiceNumber = (poType = "PO") => {
     const now = new Date();
@@ -47,7 +36,7 @@ export default function InboundPage() {
 
   const fetchSupplier = async () => {
     try {
-      const response = await fetch("/api/finances/suppliers");
+      const response = await fetch("/api/suppliers");
       const data = await response.json();
 
       setSuppliers(data);

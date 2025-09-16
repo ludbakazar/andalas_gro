@@ -4,6 +4,7 @@ export default function TableInventory({ onTotalChange, i, setItems }) {
   const [qty, setQty] = useState(0);
   const [hargaBeli, setHargaBeli] = useState(0);
   const [total, setTotal] = useState(0);
+  const [unit, setUnit] = useState("BUAH");
 
   const handleQtyChange = (e) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
@@ -13,7 +14,7 @@ export default function TableInventory({ onTotalChange, i, setItems }) {
     calculateTotal(Number(value), hargaBeli);
     setItems((prevItems) => {
       const updatedItems = [...prevItems];
-      updatedItems[i] = { ...updatedItems[i], qty: Number(value) };
+      updatedItems[i] = { ...updatedItems[i], qty: Number(value), unit: unit };
       return updatedItems;
     });
   };
@@ -26,7 +27,24 @@ export default function TableInventory({ onTotalChange, i, setItems }) {
     calculateTotal(qty, Number(value));
     setItems((prevItems) => {
       const updatedItems = [...prevItems];
-      updatedItems[i] = { ...updatedItems[i], basicPrice: Number(value) };
+      updatedItems[i] = {
+        ...updatedItems[i],
+        basicPrice: Number(value),
+        unit: unit,
+      };
+      return updatedItems;
+    });
+  };
+
+  const handleUnitChange = (e) => {
+    const selectedUnit = e.target.value;
+    setUnit(selectedUnit);
+    setItems((prevItems) => {
+      const updatedItems = [...prevItems];
+      updatedItems[i] = {
+        ...updatedItems[i],
+        unit: selectedUnit,
+      };
       return updatedItems;
     });
   };
@@ -36,7 +54,7 @@ export default function TableInventory({ onTotalChange, i, setItems }) {
     const { name, value } = e.target;
     setItems((prevItems) => {
       const updatedItems = [...prevItems];
-      updatedItems[i] = { ...updatedItems[i], [name]: value };
+      updatedItems[i] = { ...updatedItems[i], [name]: value, unit: unit };
       return updatedItems;
     });
   }
@@ -97,8 +115,8 @@ export default function TableInventory({ onTotalChange, i, setItems }) {
           <select
             name="unit"
             className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
-            onChange={handleChange}
-            defaultValue="BUAH"
+            onChange={handleUnitChange}
+            defaultValue={unit}
           >
             <option value="BUAH">BUAH</option>
             <option value="SET">SET</option>

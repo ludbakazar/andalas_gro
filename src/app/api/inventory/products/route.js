@@ -18,6 +18,9 @@ export async function GET(request) {
         basicPrice: true,
         qty: true,
       },
+      orderBy: {
+        code: "asc",
+      },
     });
     return Response.json(products);
   } catch (error) {
