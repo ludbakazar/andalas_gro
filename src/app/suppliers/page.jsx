@@ -2,6 +2,7 @@
 import ListSupplier from "@/app/components/listSuppliers";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import Loading from "../components/loading";
 
 export default function SuppliersPage() {
   const [loading, setLoading] = useState(false);
