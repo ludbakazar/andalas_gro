@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import Loading from "./components/loading";
 
 const Card = ({ href, iconBg, icon, title, description }) => {
   return (
@@ -17,6 +19,18 @@ const Card = ({ href, iconBg, icon, title, description }) => {
 };
 
 export default function Dashboard() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="bg-gray-100 min-h-screen p-6 sm:p-10">
       <div className="max-w-7xl mx-auto">

@@ -1,15 +1,17 @@
 "use client";
 
-import ListPurchases from "@/app/components/listPurchases";
 import ListSales from "@/app/components/listSales";
+import Loading from "@/app/components/loading";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SalesPage() {
+  const [loading, setLoading] = useState(false);
   const [sales, setSales] = useState([]);
 
   const fetchPurchases = async () => {
     try {
+      setLoading(true);
       const response = await fetch("/api/inventory/sales", {
         method: "GET",
         headers: {
@@ -20,12 +22,19 @@ export default function SalesPage() {
       setSales(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchPurchases();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <>
       {" "}

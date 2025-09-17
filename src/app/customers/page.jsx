@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import ListCustomer from "../components/listCustomer";
 import Swal from "sweetalert2";
+import Loading from "../components/loading";
 
 export default function CustomersPage() {
+  const [loading, setLoading] = useState(false);
   const [customers, setCustomers] = useState([]);
 
   const [formCustomer, setFormCustomer] = useState({
@@ -143,6 +145,7 @@ export default function CustomersPage() {
 
   const fetchCustomers = async () => {
     try {
+      setLoading(true);
       const response = await fetch("api/customers", {
         method: "GET",
         headers: {
@@ -156,12 +159,18 @@ export default function CustomersPage() {
       setCustomers(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchCustomers();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <>
       {" "}

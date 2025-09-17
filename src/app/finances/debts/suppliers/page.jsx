@@ -1,13 +1,16 @@
 "use client";
 
 import ListDebtSupplier from "@/app/components/listDebtSupplier";
+import Loading from "@/app/components/loading";
 import { useEffect, useState } from "react";
 
 export default function DebtPage() {
+  const [loading, setLoading] = useState(false);
   const [supplierDebts, setSupplierDebts] = useState([]);
 
   const fetchSupplierDebts = async () => {
     try {
+      setLoading(true);
       const response = await fetch("/api/finances/debts/suppliers", {
         method: "GET",
         headers: {
@@ -18,12 +21,19 @@ export default function DebtPage() {
       setSupplierDebts(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchSupplierDebts();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="bg-gray-100 min-h-screen p-6 sm:p-10">
       <div className="max-w-7xl mx-auto">

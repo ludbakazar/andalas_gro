@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 export default function SuppliersPage() {
+  const [loading, setLoading] = useState(false);
   const [supplier, setSupplier] = useState([]);
 
   const [formSupplier, setFormSupplier] = useState({
@@ -54,6 +55,7 @@ export default function SuppliersPage() {
 
   const fetchSupplier = async () => {
     try {
+      setLoading(true);
       const response = await fetch("/api/suppliers", {
         method: "GET",
         headers: {
@@ -68,6 +70,8 @@ export default function SuppliersPage() {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -158,6 +162,10 @@ export default function SuppliersPage() {
   useEffect(() => {
     fetchSupplier();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>

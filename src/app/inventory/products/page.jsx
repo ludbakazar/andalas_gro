@@ -1,12 +1,15 @@
 "use client";
 
 import ListProducts from "@/app/components/listProducts";
+import Loading from "@/app/components/loading";
 import { useEffect, useState } from "react";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const fetchProducts = async () => {
     try {
+      setLoading;
       const response = await fetch("/api/inventory/products", {
         method: "GET",
         headers: {
@@ -17,12 +20,18 @@ export default function ProductsPage() {
       setProducts(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <>
       {" "}

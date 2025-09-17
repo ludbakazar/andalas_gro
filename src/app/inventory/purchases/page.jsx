@@ -1,14 +1,17 @@
 "use client";
 
 import ListPurchases from "@/app/components/listPurchases";
+import Loading from "@/app/components/loading";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function PurchasesPage() {
+  const [loading, setLoading] = useState(false);
   const [purchases, setPurchases] = useState([]);
 
   const fetchPurchases = async () => {
     try {
+      setLoading(true);
       const response = await fetch("/api/inventory/purchases", {
         method: "GET",
         headers: {
@@ -19,12 +22,19 @@ export default function PurchasesPage() {
       setPurchases(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchPurchases();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <>
       {" "}
